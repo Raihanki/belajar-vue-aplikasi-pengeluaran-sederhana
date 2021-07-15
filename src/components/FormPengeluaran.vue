@@ -2,11 +2,11 @@
   <form @submit.prevent="tambahkanList">
     <div class="form-input">
       <label for="number">Nominal</label>
-      <input type="number" v-model="nominal" id="number">
+      <input type="number" v-model="dataPengeluaran.nominal" id="number">
     </div>
     <div class="form-input">
       <label for="keterangan">Keterangan</label>
-      <input type="text" v-model="keterangan" id="keterangan">
+      <input type="text" v-model="dataPengeluaran.keterangan" id="keterangan">
     </div>
     <div>
       <button type="submit">Simpan</button>
@@ -15,26 +15,25 @@
 </template>
 
 <script>
+import { reactive } from 'vue';
 export default {
   name: "FormPengeluaran",
-  data() {
-    return {
+  setup(props, context) {
+    const dataPengeluaran = reactive({
       nominal: null,
       keterangan: null,
-    }
-  },
-  methods : {
-    tambahkanList() {
-      this.$emit('listAdded', {
-        nominal : this.nominal,
-        keterangan : this.keterangan
+    });
+
+    function tambahkanList() {
+      context.emit('listAdded', {
+        nominal: dataPengeluaran.nominal,
+        keterangan: dataPengeluaran.keterangan,
       });
-      this.resetForm();
-    },
-    resetForm() {
-      this.nominal = null;
-      this.keterangan = null;
+      dataPengeluaran.nominal = null;
+      dataPengeluaran.keterangan = null;
     }
+
+    return { dataPengeluaran, tambahkanList };
   }
 }
 </script>
