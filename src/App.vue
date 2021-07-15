@@ -1,15 +1,41 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <Title title="Aplikasi Pengeluaran Sederhana"></Title>
+  <FormPengeluaran @listAdded="tambahData($event)"></FormPengeluaran>
+  <div class="total">
+    <h3>Total Pengeluaran : Rp. {{ totalPengeluaran }},-</h3>
+  </div>
+  <ListPengeluaran v-if="cekData" :data-pengeluaran="dataPengeluaran"></ListPengeluaran>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Title from "@/components/Title";
+import ListPengeluaran from "@/components/ListPengeluaran";
+import FormPengeluaran from "@/components/FormPengeluaran";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Title,
+    ListPengeluaran,
+    FormPengeluaran
+  },
+  data() {
+    return {
+      dataPengeluaran : [],
+    }
+  },
+  methods: {
+    tambahData(event) {
+      this.dataPengeluaran.push(event);
+    }
+  },
+  computed: {
+    cekData() {
+      return this.dataPengeluaran.length;
+    },
+    totalPengeluaran() {
+      return this.dataPengeluaran.reduce((acc, cur) => acc + parseInt(cur.nominal), 0)
+    }
   }
 }
 </script>
